@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'; //called use state hook
 import BlogList from './BlogList';
+import useFetch from './usefetch';
 
 const Home = () => {
     // const handleClick=() =>{
@@ -16,26 +17,19 @@ const Home = () => {
     //     setName('kumari');
     //     setAge(22);
 
-    const[blogs, setBlogs]=useState(null);
+    
 
-    const [name, setName]= useState('mario');
+    // const [name, setName]= useState('mario');
 
     // const handleDelete= (id) =>{
     //     const newBlogs=blogs.filter(blog=> blog.id !==id);
     //     setBlogs(newBlogs);
     // }
+
+    const{data:blogs, isPending, error} = useFetch('http://localhost:8000/blogs');
+    
    
-    useEffect(()=>{
-        fetch('http://localhost:8000/blogs')
-        .then( res => {
-            return res.json()
-        })
-        .then((data) => {
-            console.log(data);
-            setBlogs(data);
-        });
-        
-    },[]);
+    
     
     return (
        <div className="home">
@@ -56,8 +50,8 @@ const Home = () => {
         ))} */}
         
         {/* developing props since we are using data in blog list but doesnt have it, it is in home.js*/}
-
-
+        {error && <div>{error}</div>}
+        {isPending && <div>Loading....</div>}
         {blogs && <BlogList blogs={blogs} title="All Blogs!" /> }
 
 
