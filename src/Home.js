@@ -1,4 +1,4 @@
-import {useState} from 'react'; //called use state hook
+import {useState, useEffect} from 'react'; //called use state hook
 import BlogList from './BlogList';
 
 const Home = () => {
@@ -16,12 +16,26 @@ const Home = () => {
     //     setName('kumari');
     //     setAge(22);
 
-    const[blogs, setBlogs]=useState([
-        {title: 'My new website', body: 'lorem ipsum...', author:'mario', id:1},
-        {title: 'Welcome Party!', body: 'lorem ipsum...', author:'yoshi', id:2}, //id must be unique
-        {title: 'Web dev top tips', body: 'lorem ipsum...', author:'mario', id:3}
-    ]);
+    const[blogs, setBlogs]=useState(null);
+
+    const [name, setName]= useState('mario');
+
+    // const handleDelete= (id) =>{
+    //     const newBlogs=blogs.filter(blog=> blog.id !==id);
+    //     setBlogs(newBlogs);
+    // }
    
+    useEffect(()=>{
+        fetch('http://localhost:8000/blogs')
+        .then( res => {
+            return res.json()
+        })
+        .then((data) => {
+            console.log(data);
+            setBlogs(data);
+        });
+        
+    },[]);
     
     return (
        <div className="home">
@@ -42,8 +56,17 @@ const Home = () => {
         ))} */}
         
         {/* developing props since we are using data in blog list but doesnt have it, it is in home.js*/}
-        <BlogList blogs={blogs} title="All Blogs!" /> 
+
+
+        {blogs && <BlogList blogs={blogs} title="All Blogs!" /> }
+
+
+        {/* {blogs && <BlogList blogs={blogs.filter((blog) => blog.author==='mario')} title="Mario's Blogs!" />} */}
         {/* upper is a prop */}
+        {/* <button onClick={()=> setName('luigi')}>change name</button>
+        <p>{name}</p> */}
+
+
        </div> 
     );
 }
