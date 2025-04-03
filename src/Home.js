@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'; //called use state hook
+// import {useState, useEffect} from 'react'; //called use state hook
 import BlogList from './BlogList';
 import useFetch from './usefetch';
 
